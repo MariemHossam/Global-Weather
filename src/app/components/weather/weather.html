@@ -1,0 +1,53 @@
+<div class="weather-container">
+  <h2>World Weather</h2>
+
+  <div class="controls">
+    <!-- Search input -->
+    <input
+      type="text"
+      placeholder="Search for a city..."
+      [(ngModel)]="searchText"
+      (input)="onSearchChange()"
+    />
+
+    <!-- Date filter -->
+    <input
+      type="date"
+      [(ngModel)]="selectedDate"
+      (change)="onDateChange()"
+    />
+
+    <!-- Unit toggle -->
+    <button (click)="toggleUnits()">
+      Show in {{ useCelsius ? '°F' : '°C' }}
+    </button>
+
+    <!-- Reset Filters Button -->
+    <button class="reset-btn" (click)="resetFilters()">
+      Reset Filters
+    </button>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <!-- when no cities found -->
+  <div *ngIf="filteredCities.length === 0 && !errorMessage" class="hint">
+    No cities found. Try another search or date.
+  </div>
+
+  <!-- City list -->
+  <div class="city-list">
+    <div *ngFor="let city of filteredCities" class="city-card">
+      <h3>{{ city.city }}</h3>
+      <p>
+        Temp:
+        {{ useCelsius
+          ? city.forecast[0].temperatureCelsius + ' °C'
+          : city.forecast[0].temperatureFahrenheit + ' °F' }}
+      </p>
+      <p>Humidity: {{ city.forecast[0].humidity }}%</p>
+      <p>Date: {{ city.forecast[0].date }}</p>
+    </div>
+  </div>
+</div>
